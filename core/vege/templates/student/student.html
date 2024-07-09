@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block start %}
+<div class="container">
+  <div class="mx-auto border p-1 mt-3 rounded">
+    <div class="search col-6 mx-auto mt-4">
+      <h3 class="text-center">Search Students</h3>
+      <form action="" class="d-flex justify-content-center">
+        <input
+          type="text"
+          placeholder="Search Students"
+          class="form-control"
+          name="student_search"
+        />
+        <button type="submit" class="px-4 py-2 btn btn-primary">Search</button>
+      </form>
+    </div>
+    <h1 class="text-center mt-4">Student List</h1>
+    <nav class="Page navigation pagination">
+      <ul class="pagination d-flex gap-2">
+        {% if querySet.has_previous %}
+        <li class="page-item"><a href="?page=1">&laquo; first</a></li>
+        <li class="page-item"><a href="?page={{ querySet.previous_page_number }}">previous</a></li>
+        {% endif %}
+
+        <span class="current">
+          Page {{ querySet.number }} of {{ querySet.paginator.num_pages }}.
+        </span>
+
+        {% if querySet.has_next %}
+        <li class="page-item"><a href="?page={{ querySet.next_page_number }}">Next</a></li>
+        <a href="?page={{ querySet.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </ul>
+    </nav>
+    <table class="table table-striped mt-4 border">
+      <tr>
+        <th>S.No.</th>
+        <th>Student Id</th>
+        <th>Student Name</th>
+        <th>Student Email</th>
+        <th>Student Age</th>
+        <th>Student Address</th>
+        <th>Student Department</th>
+      </tr>
+      {% for student in querySet %}
+      <tr>
+        <td>{{forloop.counter}}</td>
+        <td><a href="/student_marks/{{student.student_id}}">{{student.student_id}}</a></td>
+        <td>{{student.student_name}}</td>
+        <td>{{student.student_email}}</td>
+        <td>{{student.student_age}}</td>
+        <td>{{student.student_address}}</td>
+        <td>{{student.department}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

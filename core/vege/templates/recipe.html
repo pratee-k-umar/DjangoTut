@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block start %}
+
+<div class="mt-5 container">
+  <div class="col-8 mx-auto">
+    {% if request.user.is_authenticated %}
+      <h1>Welcome {{request.user.first_name}},</h1>
+    {% else %}
+      <h1>Hello User, please login</h1>
+    {% endif %}
+  </div>
+  <form class="px-5 mt-5 py-4 rounded shadow col-8 mx-auto" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h1 class="text-center fw-bolder">Add Recipe</h1>
+    <hr>
+    <div class="mb-3 mt-5">
+      <label class="form-label fs-2">Name:</label>
+      <input name="recipeName" type="text" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label fs-2">Description:</label>
+      <textarea name="recipeDescription" class="form-control"  required></textarea>
+    </div>
+    <div class="image d-flex justify-content-between align-items-center mt-4">
+      <label class="form-label fs-2">Image:</label>
+      <input name="recipeImage" type="file" class="fs-4 p-0 m-0 border">
+    </div>
+    <button type="submit" class="btn btn-primary fs-3 d-flex mx-auto mt-4" {% if not request.user.is_authenticated %} disabled {% endif %} >Add Recipe</button>
+  </form>
+  <div class="search col-8 mx-auto mt-4">
+    <h3 class="text-center">Search Recipes</h3>
+    <form action="" class="d-flex justify-content-center">
+      <input type="text" placeholder="Search Recipe" class="form-control" name="search">
+      <button type="submit" class="px-4 py-2 btn btn-primary">Search</button>
+    </form>
+  </div>
+  <div class="col-8 mx-auto mt-3">
+    <table class="table" border="1">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Recipe Name</th>
+          <th>Recipe Description</th>
+          <th>Recipe Image</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      {% for recipe in recipes %}
+      <tbody>
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td>{{recipe.recipeName}}</td>
+          <td>{{recipe.recipeDescription}}</td>
+          <td><img src="/media/{{recipe.recipeImage}}" alt="recipe_image" style="height: 150px;"></td>
+          <td class="d-flex flex-column gap-3">
+            <a href="{% url 'updateRecipe' id=recipe.id %}" class="btn btn-success">Edit</a>
+            <a href="/deleteRecipe/{{recipe.id}}" class="btn btn-danger">Delete</a>
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+
+{% endblock %}

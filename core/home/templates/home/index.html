@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block start %}
+  <h1>This is the {base.html} page</h1>
+  {{peoples}}
+  <table border="1">
+    <tr>
+      <th>S.No</th>
+      <th>Name</th>
+      <th>Age</th>
+    </tr>
+    {% for people in peoples %}
+    <tr>
+      <th>{{forloop.counter}}</th>
+      <th>{{people.name}}</th>
+      <th>{{people.age}}</th>
+    </tr>
+    {% endfor %}
+  </table>
+  <a href="/about/">About</a>
+  <a href="/contact/">Contact</a>
+  <a href="/recipes">Recipes</a>
+
+{% endblock %}
